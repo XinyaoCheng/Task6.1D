@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="manu_value">
+        <item>Home</item>
+        <item>Account</item>
+        <item>My orders</item>
+    </array>
+</resources>
