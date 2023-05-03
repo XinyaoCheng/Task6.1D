@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,7 +74,12 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     Toast.makeText(LoginActivity.this, "success to log in", Toast.LENGTH_SHORT).show();
                                     Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                    SharedPreferences sharedPreferences = getSharedPreferences("my_pref",MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("login_name",username);
+                                    editor.apply();
                                     startActivity(homeIntent);
+
                                 }else{
                                     Toast.makeText(LoginActivity.this, "fail to log in", Toast.LENGTH_SHORT).show();
                                 }

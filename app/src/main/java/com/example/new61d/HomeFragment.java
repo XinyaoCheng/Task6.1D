@@ -1,16 +1,19 @@
 package com.example.new61d;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +43,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView home_recycleView;
     private OrderAdapter home_order_adapter;
     private RecyclerView.LayoutManager home_layoutManager;
+    private FloatingActionButton add_order_button;
 
     public HomeFragment(ArrayList<OrderModel> orderList){
         this.orderList = orderList;
@@ -83,12 +87,21 @@ public class HomeFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        add_order_button = rootView.findViewById(R.id.add_order_button);
         home_recycleView = rootView.findViewById(R.id.current_recycleView);
         home_order_adapter = new OrderAdapter(getContext(), orderList);
         home_layoutManager = new GridLayoutManager(getContext(),1);
         home_recycleView.setLayoutManager(home_layoutManager);
         home_recycleView.setAdapter(home_order_adapter);
 
+        //add_order button clicked
+        add_order_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newOrderIntent = new Intent(getActivity(), NewOrderActivity.class);
+                startActivity(newOrderIntent);
+            }
+        });
         return rootView;
     }
 }

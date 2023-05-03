@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderDetailFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/detail_order_image"
+            android:layout_width="413dp"
+            android:layout_height="112dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_sender_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/detail_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="From Xinyao Cheng"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_pick_up_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_order_image" />
+
+        <TextView
+            android:id="@+id/detail_pick_up_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Pick up time:12:30"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_receiver_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_sender_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_sender_name" />
+
+
+        <TextView
+            android:id="@+id/detail_receiver_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="To Xinyao Cheng"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_drop_off_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_pick_up_time" />
+
+        <TextView
+            android:id="@+id/detail_drop_off_location"
+            android:layout_width="379dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="42dp"
+            android:text="Drop off location:123 Main St, Anytown, USA"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_length"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_receiver_name" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:text="Good Description"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/detail_weight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <TextView
+            android:id="@+id/detail_weight"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="weight:100kg"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_length"
+            app:layout_constraintEnd_toStartOf="@+id/detail_length"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_length" />
+
+        <TextView
+            android:id="@+id/detail_length"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="13dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="length:3m"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_weight"
+            app:layout_constraintTop_toBottomOf="@+id/detail_drop_off_location" />
+
+        <TextView
+            android:id="@+id/detail_width"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="width:2m"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_height"
+            app:layout_constraintEnd_toStartOf="@+id/detail_height"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_height" />
+
+        <TextView
+            android:id="@+id/detail_height"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="17dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="height:1m"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_vehicle_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_width"
+            app:layout_constraintTop_toBottomOf="@+id/detail_length" />
+
+        <TextView
+            android:id="@+id/detail_good_type"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="type:books"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_vehicle_type"
+            app:layout_constraintEnd_toStartOf="@+id/detail_vehicle_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_vehicle_type" />
+
+        <TextView
+            android:id="@+id/detail_vehicle_type"
+            android:layout_width="165dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="13dp"
+            android:background="@drawable/input_box_bg"
+            android:gravity="center"
+            android:text="vehicle type:truck"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/call_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_good_type"
+            app:layout_constraintTop_toBottomOf="@+id/detail_height" />
+
+        <Button
+            android:id="@+id/call_button"
+            android:layout_width="183dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="17dp"
+            android:text="call driver"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_vehicle_type" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

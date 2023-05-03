@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +45,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.MyViewHolder holder, int position) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child("/"+(position+1)+".jpg");
+        StorageReference storageRef = storage.getReference().child(orderList.get(position).getOrder_iamge_name());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -68,6 +71,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 context.startActivity(Intent.createChooser(shareIntent,"share with"));
             }
         });
+
+        //click card, bring user to order detail fragment
+        OrderModel thisOrder = orderList.get(position);
+        holder.order_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderDetailFragment fragment = new OrderDetailFragment(thisOrder);
+                FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.current_fragment, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     @Override
@@ -80,6 +97,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         ImageView order_image;
         TextView order_title, order_desc;
         ImageButton share_button;
+        CardView order_item;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +105,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             order_title = itemView.findViewById(R.id.recycle_order_title);
             order_desc = itemView.findViewById(R.id.recycle_order_description);
             share_button = itemView.findViewById(R.id.share_button);
+            order_item = itemView.findViewById(R.id.recycle_order_item);
         }
     }
 }

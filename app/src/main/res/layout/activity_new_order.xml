@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewOrderActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="118dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="117dp"
+                android:layout_marginBottom="38dp"
+                android:text="New Delivery"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/receiver_name_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="52dp"
+                android:text="Reveiver name:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <EditText
+                android:id="@+id/receiver_name_input"
+                android:layout_width="237dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/input_box_bg"
+                android:inputType="textPersonName"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="30dp"
+                android:text="Pick up data:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <CalendarView
+                android:id="@+id/pick_up_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="46dp"
+                android:text="Pick up time:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pick_up_calendar" />
+
+            <EditText
+                android:id="@+id/pick_up_time_input"
+                android:layout_width="256dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/input_box_bg"
+                android:ems="10"
+                android:inputType="time"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/pick_up_calendar" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="32dp"
+                android:text="drop_off location:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <EditText
+                android:id="@+id/drop_off_location_input"
+                android:layout_width="373dp"
+                android:layout_height="78dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/input_box_bg"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="25dp"
+                android:text="Goods type:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/drop_off_location_input" />
+
+            <RadioGroup
+                android:id="@+id/good_type_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15">
+
+                <RadioButton
+                    android:id="@+id/good_furniture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Furniture"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/good_dryGoods"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dry goods"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/good_food"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/good_buildingMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Building Material"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/good_other"
+                    android:layout_width="246dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/input_box_bg"
+                    android:hint="other"
+                    android:textSize="20dp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="9dp"
+                android:text="Weight and dimension:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/good_type_group" />
+
+            <EditText
+                android:id="@+id/weight_input"
+                android:layout_width="120dp"
+                android:layout_height="79dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/input_box_bg"
+                android:gravity="center"
+                android:hint="Weight"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <EditText
+                android:id="@+id/width_input"
+                android:layout_width="120dp"
+                android:layout_height="79dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="7dp"
+                android:gravity="center"
+                android:background="@drawable/input_box_bg"
+                android:hint="Width"
+                android:textSize="20dp"
+                app:layout_constraintStart_toEndOf="@+id/weight_input"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <EditText
+                android:id="@+id/length_input"
+                android:layout_width="120dp"
+                android:layout_height="79dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/input_box_bg"
+                android:gravity="center"
+                android:hint="Length"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView17"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weight_input" />
+
+            <EditText
+                android:id="@+id/height_input"
+                android:layout_width="120dp"
+                android:layout_height="79dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="21dp"
+                android:gravity="center"
+                android:background="@drawable/input_box_bg"
+                android:hint="Height"
+                android:textSize="20dp"
+                app:layout_constraintStart_toEndOf="@+id/length_input"
+                app:layout_constraintTop_toBottomOf="@+id/width_input" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="295dp"
+                android:text="Vehicle type:"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/length_input" />
+
+            <RadioGroup
+                android:id="@+id/vehicle_type_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="132dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17">
+
+                <RadioButton
+                    android:id="@+id/vehicle_truck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Truck"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/vehicle_van"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Van"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/vehicle_refrigeratedTruck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Refrigerated Truck"
+                    android:textSize="20dp" />
+
+                <RadioButton
+                    android:id="@+id/vehicle_miniTruck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mini_truck"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/vehicle_other"
+                    android:layout_width="246dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/input_box_bg"
+                    android:hint="other"
+                    android:textSize="20dp" />
+
+
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/order_image_input"
+                android:layout_width="413dp"
+                android:layout_height="112dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/register_upload_image"
+                app:layout_constraintBottom_toTopOf="@+id/create_order_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vehicle_type_group" />
+
+            <Button
+                android:id="@+id/create_order_button"
+                android:layout_width="171dp"
+                android:layout_height="78dp"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="8dp"
+                android:text="create order"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_image_input" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
