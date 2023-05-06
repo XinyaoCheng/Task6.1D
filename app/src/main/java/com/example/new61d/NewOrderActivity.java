@@ -38,7 +38,6 @@ public class NewOrderActivity extends AppCompatActivity {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
-    public static final int STORAGE_PERMISSION = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE" };
@@ -148,13 +147,17 @@ public class NewOrderActivity extends AppCompatActivity {
 
         if(!imageUrl.equals(null)) {
             //upload to firebase storage
-            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(UUID.randomUUID().toString());
+            image_name =UUID.randomUUID().toString();
+            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(image_name);
+
+            Log.v("new order image:",image_name);
             UploadTask uploadTask = imageRef.putFile(imageUrl);
+
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(NewOrderActivity.this, "success to upload image", Toast.LENGTH_SHORT).show();
-                            image_name = taskSnapshot.getMetadata().getName();
+
 
                         }
                     })
@@ -166,12 +169,13 @@ public class NewOrderActivity extends AppCompatActivity {
                         }
                     });
         }
-        //put all data into orderModel:
-        newOrder = new OrderModel(receiver_name,sender_name,pick_up_date,pick_up_time,drop_off_location,good_type,weight,width,length,height,vehicle_type,image_name,false);
-        Log.v("new order",newOrder.toString(1));
+
     }
 
     private void saveInFirebase() {
+        //put all data into orderModel:
+        newOrder = new OrderModel(receiver_name,sender_name,pick_up_date,pick_up_time,drop_off_location,good_type,weight,width,length,height,vehicle_type,image_name,false);
+        Log.v("new order",newOrder.toString(1));
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseRef = firebaseDatabase.getReference("orderlist");
         String orderId = databaseRef.push().getKey();

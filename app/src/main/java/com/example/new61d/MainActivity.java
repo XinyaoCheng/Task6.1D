@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ListView manu_listView;
     String[] manu_value_list;
     ArrayList<OrderModel> home_order_list, my_order_list;
-    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         home_navigation = findViewById(R.id.manu_NavigationView);
         manu_listView = findViewById(R.id.manu_listView);
         manu_value_list = getResources().getStringArray(R.array.manu_value);
-        progressBar = findViewById(R.id.progressBar);
 
 
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                     //OrderModel orderModel = orderSnapshot.getValue(OrderModel.class);
                     Log.v("all order",orderModel.toString());
                     home_order_list.add(orderModel);
-                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
 
