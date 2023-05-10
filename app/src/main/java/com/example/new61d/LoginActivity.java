@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     TextView username_input, password_input;
-    Button login_button, signin_button;
+    Button login_button, signup_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +39,10 @@ public class LoginActivity extends AppCompatActivity {
         username_input = findViewById(R.id.user_name_input_login);
         password_input = findViewById(R.id.password_input_login);
         login_button = findViewById(R.id.login_button);
-        signin_button = findViewById(R.id.sign_button);
+        signup_button = findViewById(R.id.sign_button);
 
         //sign in button is clicked
-        signin_button.setOnClickListener(new View.OnClickListener() {
+        signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signinIntent = new Intent(LoginActivity.this, RegisterActivity.class);
