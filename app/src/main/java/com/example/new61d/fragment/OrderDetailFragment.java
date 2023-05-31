@@ -1,4 +1,4 @@
-package com.example.new61d;
+package com.example.new61d.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -14,10 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.new61d.model.OrderModel;
+import com.example.new61d.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;

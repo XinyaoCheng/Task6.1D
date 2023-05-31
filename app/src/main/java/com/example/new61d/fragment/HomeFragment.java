@@ -1,6 +1,5 @@
-package com.example.new61d;
+package com.example.new61d.fragment;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,15 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.new61d.model.OrderModel;
+import com.example.new61d.R;
+import com.example.new61d.activity.NewOrderActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
@@ -33,8 +39,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
-import java.util.Queue;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -158,19 +162,19 @@ public class HomeFragment extends Fragment {
                             }
                         })
                         .build();
-        orderAdapter = new FirebaseRecyclerAdapter<OrderModel, MyViewHolder>(options) {
+        orderAdapter = new FirebaseRecyclerAdapter<OrderModel, myViewHolder>(options) {
 
             @NonNull
             @Override
-            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.order_item, parent, false);
 
-                return new MyViewHolder(view);
+                return new myViewHolder(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull OrderModel model) {
+            protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull OrderModel model) {
 
                 // add image
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(model.getOrder_iamge_name());
@@ -180,7 +184,6 @@ public class HomeFragment extends Fragment {
                         Picasso.get().load(uri).into(holder.order_image);
                     }
                 });
-
                 //add title and desciption
                 holder.order_title.setText(model.getGood_type());
                 holder.order_desc.setText(model.toString());
@@ -238,5 +241,22 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         orderAdapter.stopListening();
+    }
+}
+class myViewHolder extends RecyclerView.ViewHolder {
+    ImageView order_image;
+    TextView order_title, order_desc;
+    ImageButton share_button;
+    CardView order_item;
+
+
+    public myViewHolder(@NonNull View itemView) {
+        super(itemView);
+        order_image = itemView.findViewById(R.id.recycle_order_image);
+        order_title = itemView.findViewById(R.id.recycle_order_title);
+        order_desc = itemView.findViewById(R.id.recycle_order_description);
+        share_button = itemView.findViewById(R.id.share_button);
+        order_item = itemView.findViewById(R.id.recycle_order_item);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.new61d;
+package com.example.new61d.model;
 
 import android.net.Uri;
 

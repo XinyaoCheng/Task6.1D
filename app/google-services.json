@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "25223105429",
-    "project_id": "sit3056-1d",
-    "storage_bucket": "sit3056-1d.appspot.com"
+    "project_number": "1002215129594",
+    "project_id": "sit10-2",
+    "storage_bucket": "sit10-2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:25223105429:android:21db3e034cb5c7ccecc49c",
+        "mobilesdk_app_id": "1:1002215129594:android:2644f74e1dee4e5e4b6443",
         "android_client_info": {
           "package_name": "com.example.new61d"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "25223105429-b46qcjfuuf5qkfgt65agdd3n2coe0nns.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCf8ptJYjdQAdJlwy-fFKh8AXxmPli4Ya8"
+          "current_key": "AIzaSyAFeYfSzQsdu_bvDpXEPEAIhNE5m7tDpac"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "25223105429-b46qcjfuuf5qkfgt65agdd3n2coe0nns.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
