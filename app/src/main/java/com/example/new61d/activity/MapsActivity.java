@@ -3,17 +3,22 @@ package com.example.new61d.activity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.new61d.Directions;
 import com.example.new61d.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,11 +35,9 @@ import com.example.new61d.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.maps.android.PolyUtil;
 
 
@@ -59,14 +62,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PlacesClient placesClient;
     private FusedLocationProviderClient fusedLocationClient;
     Button pay_button, call_button;
-    TextView fee_TextView, time_TextView;
+    TextView destination_view, fee_TextView, time_TextView;
     String driverNumber = "0416931778";
     private String MAP_KEY="AIzaSyCxDc0s5_Qor-_kzKXCfof5esTuwR7csxI";
     LatLng startLatLng, endLatLng;
     String origin, destination;
     String overview_polyline = null;
     String url = "https://maps.googleapis.com/maps/api/directions/json?";
-
+    String duration = null, bill = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +79,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // initial
-        call_button = findViewById(R.id.call_button);
+        call_button = findViewById(R.id.call_now_button);
         pay_button = findViewById(R.id.pay_button);
         time_TextView = findViewById(R.id.time_TextView);
         fee_TextView = findViewById(R.id.fee_TextView);
+        destination_view = findViewById(R.id.destination_view);
         //initiate the SDK
         if (!Places.isInitialized()) {
             Places.initialize(this, MAP_KEY);
@@ -90,13 +94,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         AutocompleteSupportFragment startAutocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.start_fragment);
+                getSupportFragmentManager().findFragmentById(R.id.origin_fragment);
         startAutocompleteFragment.setHint("enter start point address");
-        AutocompleteSupportFragment endAutocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.end_fragment);
         startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.LAT_LNG));
-        endAutocompleteFragment.setHint("enter end point address");
-        endAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.LAT_LNG));
+
 
 
 
@@ -109,34 +110,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.v("deakin address",startLatLng.toString());
                 origin = place.getAddress();
                 startAutocompleteFragment.setHint(place.getAddress());
-                mMap.addMarker(new MarkerOptions().position(startLatLng).title("Start Point"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng,13));
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-
-            }
-        });
-        endAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                endLatLng = place.getLatLng();
-                destination = place.getAddress();
-                endAutocompleteFragment.setHint(place.getAddress());
-                mMap.addMarker(new MarkerOptions().position(endLatLng).title("End Point"));
-
+                mMap.addMarker(new MarkerOptions().position(startLatLng).title("pick up"));
                 //get directions:
                 setDirections();
 
-
+                //move the camera, make it can include two address
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
                 builder.include(startLatLng);
                 builder.include(endLatLng);
                 LatLngBounds bounds = builder.build();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
-
-
             }
 
             @Override
@@ -144,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
         //call drivers
         call_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +137,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(callIntent);
             }
         });
+
+
+        //pay now:
+        pay_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
     }
 
@@ -176,14 +170,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string();
-                Log.v("网页响应",res);
+
                 try{
                     JSONObject resonse_json = new JSONObject(res);
                     JSONArray routesArray = resonse_json.getJSONArray("routes");
                     JSONObject routeObject = routesArray.getJSONObject(0);
+                    //get the approx duration:
+                    JSONArray legsArray = routeObject.getJSONArray("legs");
+                    if (legsArray.length() > 0) {
+                        JSONObject leg = legsArray.getJSONObject(0);
+                        JSONObject durationObject = leg.getJSONObject("duration");
+                        String durationText = durationObject.getString("text");
+                        Log.v("预估的时间",durationText);
+                        duration = "Approx. Travel Time:"+durationText;
+
+                        JSONObject distance = leg.getJSONObject("distance");
+                        int distance_value = distance.getInt("value");
+                        int money = 10+distance_value/1927;
+                        Log.v("预估的钱",String.valueOf(money));
+                        bill = "Approx. Fare:$"+money;
+                    }
+
+                    //get the diraction
                     JSONObject overviewPolylineObject = routeObject.getJSONObject("overview_polyline");
                     overview_polyline = overviewPolylineObject.optString("points");
-                    Log.v("怎么 又报错了！！！！！",overview_polyline);
+
                     List<LatLng> decodedPath = PolyUtil.decode(overview_polyline);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -194,6 +205,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             lineOptions.jointType(JointType.ROUND);
                             lineOptions.width(15f);
                             mMap.addPolyline(lineOptions);
+                            time_TextView.setText(duration);
+                            fee_TextView.setText(bill);
                         }
                     });
 
@@ -221,6 +234,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng deakin =new LatLng(-37.8445153, 145.1122556);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deakin,15));
+        destination = getIntent().getStringExtra("destination");
+        destination_view.setText("Drop off in "+destination);
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocationName(destination, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                endLatLng = new LatLng(address.getLatitude(),address.getLongitude());
+                googleMap.addMarker(new MarkerOptions().position(endLatLng).title("drop off"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(endLatLng, 15));
+            }
+        } catch (IOException e) {
+            Toast.makeText(MapsActivity.this, "fail to get your destination in map, error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 

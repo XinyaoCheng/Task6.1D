@@ -95,55 +95,57 @@ public class NewOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getInfo();
-                checkValidation();
-                saveInFirebase();
+                if(checkValidation()){
+                    saveInFirebase();
+                }
+
             }
         });
     }
 
-    private void checkValidation() {
+    private Boolean checkValidation() {
         //check the null value
         if(TextUtils.isEmpty(receiver_name)){
             receiver_name_input.setError(" receivername is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(pick_up_time)){
             pick_up_time_input.setError("pickup time is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(drop_off_location)){
             drop_off_location_input.setError("drop_off location is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(weight)){
             weight_input.setError("weight is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(width)){
             width_input.setError("width is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(length)){
             length_input.setError("length is required");
-            return;
+            return false;
         }
 
         if(TextUtils.isEmpty(height)){
             height_input.setError("height is required");
-            return;
+            return false;
         }
         if(TextUtils.isEmpty(good_type)){
             Toast.makeText(NewOrderActivity.this, "please choose a good type", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if(TextUtils.isEmpty(vehicle_type)){
             Toast.makeText(NewOrderActivity.this, "please choose a vehicle type", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         if(!imageUrl.equals(null)) {
@@ -153,7 +155,6 @@ public class NewOrderActivity extends AppCompatActivity {
 
             Log.v("new order image:",image_name);
             UploadTask uploadTask = imageRef.putFile(imageUrl);
-
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -166,10 +167,10 @@ public class NewOrderActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(NewOrderActivity.this, "fail to upload image" + e.getMessage(), Toast.LENGTH_SHORT).show();
-
                         }
                     });
         }
+        return true;
 
     }
 

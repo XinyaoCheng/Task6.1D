@@ -2,6 +2,7 @@ package com.example.new61d.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.new61d.activity.MapsActivity;
 import com.example.new61d.model.OrderModel;
 import com.example.new61d.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -128,11 +130,20 @@ public class OrderDetailFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("my_pref",MODE_PRIVATE);
         String login_name = sharedPreferences.getString("login_name","");
-        if((!detail_order.isFinished())&&(detail_order.getSender_name().equals(login_name))){
-            call_button.setVisibility(View.VISIBLE);
-        }else{
-            call_button.setVisibility(View.INVISIBLE);
-        }
+//        if((detail_order.isFinished())&&(detail_order.getSender_name().equals(login_name))){
+//            call_button.setVisibility(View.VISIBLE);
+//        }else{
+//            call_button.setVisibility(View.INVISIBLE);
+//        }
+
+        call_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MapsActivity.class);
+                intent.putExtra("destination",detail_order.getDrop_off_location());
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 }
