@@ -209,6 +209,7 @@
                 android:layout_marginTop="7dp"
                 android:background="@drawable/input_box_bg"
                 android:gravity="center"
+                android:inputType="number"
                 android:hint="Weight"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -223,6 +224,7 @@
                 android:gravity="center"
                 android:background="@drawable/input_box_bg"
                 android:hint="Width"
+                android:inputType="number"
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@+id/weight_input"
                 app:layout_constraintTop_toBottomOf="@+id/textView16" />
@@ -237,6 +239,7 @@
                 android:background="@drawable/input_box_bg"
                 android:gravity="center"
                 android:hint="Length"
+                android:inputType="number"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView17"
                 app:layout_constraintStart_toStartOf="parent"
@@ -251,6 +254,7 @@
                 android:gravity="center"
                 android:background="@drawable/input_box_bg"
                 android:hint="Height"
+                android:inputType="number"
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@+id/length_input"
                 app:layout_constraintTop_toBottomOf="@+id/width_input" />

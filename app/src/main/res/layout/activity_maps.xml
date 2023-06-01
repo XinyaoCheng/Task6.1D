@@ -67,6 +67,7 @@
                 android:layout_gravity="center"
                 android:text="book now" />
 
+
             <Button
                 android:id="@+id/call_now_button"
                 android:layout_width="165dp"

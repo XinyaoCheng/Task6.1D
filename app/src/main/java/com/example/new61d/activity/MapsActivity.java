@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -39,6 +40,11 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.android.PolyUtil;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 
 import org.json.JSONArray;
@@ -46,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,6 +77,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String overview_polyline = null;
     String url = "https://maps.googleapis.com/maps/api/directions/json?";
     String duration = null, bill = null;
+    int money =0;
+    private static PayPalConfiguration config =
+            new PayPalConfiguration()
+                    .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+                    .clientId("AfiTT-LXzjgZroBK7Ojge0-SYrBgkDEDZRZTSpisTOX_uhQ6rulTUp11DXxtje5yBkM-U--zUMiQle0q");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +90,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        //start paypal sservice
+        Intent payIntent = new Intent(MapsActivity.this,PayPalService.class);
+        payIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+        startService(payIntent);
         // initial
         call_button = findViewById(R.id.call_now_button);
         pay_button = findViewById(R.id.pay_button);
@@ -95,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         AutocompleteSupportFragment startAutocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.origin_fragment);
-        startAutocompleteFragment.setHint("enter start point address");
+        startAutocompleteFragment.setHint("enter origin address");
         startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.LAT_LNG));
 
 
@@ -132,9 +148,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         call_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:"+driverNumber));
-                startActivity(callIntent);
+                if(duration!=null){
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:"+driverNumber));
+                    startActivity(callIntent);
+                }else{
+                    Toast.makeText(MapsActivity.this, "Please enter your pick up adress first!" , Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
@@ -143,11 +165,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pay_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(duration!=null){
+                    PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
+                    Intent intent = new Intent(MapsActivity.this, PaymentActivity.class);
+                    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+                    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+
+                    startActivityForResult(intent, 1);
+                }else{
+                    Toast.makeText(MapsActivity.this, "Please enter your pick up adress first!" , Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });
 
 
+    }
+
+    //paypal part:
+
+
+    private PayPalPayment getThingToBuy(String paymentIntentSale) {
+        return new PayPalPayment(new BigDecimal(money), "AUD", "truck order", paymentIntentSale);
+    }
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) {
+                try {
+                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
+
+                } catch (JSONException e) {
+                    Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                }
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.i("paymentExample", "The user canceled.");
+        } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
     }
 
     private void setDirections() {
@@ -186,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         JSONObject distance = leg.getJSONObject("distance");
                         int distance_value = distance.getInt("value");
-                        int money = 10+distance_value/1927;
+                        money = 10+distance_value/1927;
                         Log.v("预估的钱",String.valueOf(money));
                         bill = "Approx. Fare:$"+money;
                     }
